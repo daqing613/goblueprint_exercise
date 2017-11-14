@@ -21,6 +21,7 @@ func newRoom() *room {
 		join:    make(chan *client),
 		leave:   make(chan *client),
 		clients: make(map[*client]bool),
+		tracer:  trace.Off(),
 	}
 }
 
@@ -38,7 +39,7 @@ func (r *room) run() {
 			r.tracer.Trace("Message received: ", string(msg))
 			for client := range r.clients {
 				client.send <- msg
-				r.tracer.Trace(" -- sent to client ")
+				r.tracer.Trace(" -- sent to client")
 			}
 		}
 	}
